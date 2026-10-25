@@ -1,12 +1,12 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "iliasLogin",
-  "version": "2.2",
-  "description": "Clicks through the ilias login pages automatically",
+  "version": "2.3",
+  "description": "Clicks through the Ilias login pages automatically",
   "icons": {
     "48": "icons/48pxIliasLogo.png"
   },
-  "browser_action": {
+  "action": {
     "default_icon": {
       "16": "icons/16pxiliasLogo.png",
       "32": "icons/32pxiliasLogo.png"
@@ -15,10 +15,10 @@
   "content_scripts": [
     {
       "matches": [
-        "*://*.ilias.studium.kit.edu/login*",
-        "*://*.campus.studium.kit.edu/*",
-        "*://*.ilias.studium.kit.edu/ilias.php*",
-        "*://*.idp.scc.kit.edu/idp/profile*"
+        "*://*.ilias.uni-freiburg.de/*",
+        "*://*.mylogin.uni-freiburg.de/*",
+        "*://*.mylogin.ub.uni-freiburg.de/*",
+        "*://*.ilias.uni-freiburg.de/ilias.php*"
       ],
       "js": [
         "iliasLogin.js"
