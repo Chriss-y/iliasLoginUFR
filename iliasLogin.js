@@ -36,16 +36,6 @@ function detectMoreComplexUrl() {
   return false;
 }
 
-/*  Ilias UFR only assigns classes to the button
-function clickButtonById(id) {
-  var element = document.getElementById(id);
-  if (element) {
-    element.click();
-    console.log("button clicked");
-  }
-}
-*/
-
 function clickButtonByClass(className, index = 0) {
   var shibButton = document.getElementsByClassName(className)[index];
  
@@ -67,21 +57,6 @@ function clickELementByAriaLabel(label) {
     console.log("element clicked");
   }
 }
-
-/*  Dunno what this does or what it is for...
-function clickListElement(listId, elementNumber) {
-  console.log("ClickListElementFct firing");
-  var list = document.getElementById(listId);
-  if (list) {
-    var listElement = list.getElementsByTagName("li")[elementNumber].getElementsByTagName("a")[0];
-    if (listElement) {
-      console.log("listElement URL: " + listElement + " about to be clicked");
-      listElement.click();
-      console.log("listElement URL clicked on");
-    }
-  }
-}
-*/
 
 function onUsernamePopulated(thenFunction) {
   var nameField = document.getElementById('LoginForm_username');
