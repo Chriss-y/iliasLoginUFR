@@ -1,12 +1,18 @@
 /// script to go through the Ilias and login pages for Uni Freiburg
 
-if (window.location.href.indexOf("https://ilias.uni-freiburg.de/") > -1 && !window.location.href.includes("baseclass=ilrepositorygui")) {
+const W_URL = window.location.href;
+
+if (W_URL.indexOf("https://ilias.uni-freiburg.de/login.php") > -1 && !W_URL.includes("baseclass=ilrepositorygui")) {
+  console.log("ILIAS login URL detected");
+  clickButtonByClass("il-shib-login-button", 0);
+
+} else if (W_URL.indexOf("https://ilias.uni-freiburg.de/") > -1 && !W_URL.includes("baseclass=ilrepositorygui")) {
   console.log("ILIAS URL detected");
-  if (!clickButtonByClass("il_ContainerItemTitle", 2)) clickButtonByClass("il-shib-login-button", 0);
+  clickButtonByClass("il_ContainerItemTitle", 2, "Login")
 
 } else if (
-  window.location.href.indexOf("mylogin.uni-freiburg.de") > -1
-  || window.location.href.indexOf("mylogin.ub.uni-freiburg.de") > -1
+  W_URL.indexOf("mylogin.uni-freiburg.de") > -1
+  || W_URL.indexOf("mylogin.ub.uni-freiburg.de") > -1
   ) {
   console.log("Freiburg Login (myLogin) URL detected");
   onUsernamePopulated(function() {
@@ -23,30 +29,33 @@ if (window.location.href.indexOf("https://ilias.uni-freiburg.de/") > -1 && !wind
 
 function detectMoreComplexUrl() {
   // return false for a forum link
-  if (window.location.href.toLowerCase().indexOf("https://ilias.uni-freiburg.de/ilias.php?baseclass=ilrepositorygui&cmd=viewthread") > -1) {
+  if (W_URL.toLowerCase().indexOf("https://ilias.uni-freiburg.de/ilias.php?baseclass=ilrepositorygui&cmd=viewthread") > -1) {
     console.log("Forum Link detected, IliasLogin not executing because you should already be logged in.");
     return false;
   }
 
   // return true for any other URL which links to Magazin/Repository but is not a forum URL
-  if (window.location.href.toLowerCase().indexOf("https://ilias.uni-freiburg.de/ilias.php?baseclass=ilrepositorygui") > -1) {
+  if (W_URL.toLowerCase().indexOf("https://ilias.uni-freiburg.de/ilias.php?baseclass=ilrepositorygui") > -1) {
     console.log("Magazin URL detected, Extension firing");
     return true;
   }
   return false;
 }
 
-function clickButtonByClass(className, index = 0) {
+function clickButtonByClass(className, index = 0, verification = "") {
   var shibButton = document.getElementsByClassName(className)[index];
+  if (!shibButton) return false;
  
-  if (shibButton) {
+  if (verification === "" || shibButton.innerHTML.includes(verification)) {
     console.log("button about to be clicked: " + shibButton);
     shibButton.click();
     console.log("button clicked");
-  } else {
-    return false
+
+    return true;
   }
-  return true
+
+  console.log("No Login buttons found.")
+  return false
 }
 
 function clickELementByAriaLabel(label) {
@@ -59,8 +68,11 @@ function clickELementByAriaLabel(label) {
 }
 
 function onUsernamePopulated(thenFunction) {
-  var nameField = document.getElementById('LoginForm_username');
-  if (!nameField || nameField.value == '') {
+  var nameField = document.getElementById('LoginForm_username')
+  var passField = document.getElementById('LoginForm_password');
+  if (
+    (!nameField || nameField.value == '')
+    && !passField || passField.value == '') {
     window.setTimeout(onUsernamePopulated.bind(null, thenFunction), 100); /* checks every 100 milliseconds */
   } else {
     thenFunction();
