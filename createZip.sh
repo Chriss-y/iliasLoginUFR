@@ -1,1 +1,1 @@
-zip -0 -r iliasLoginUFR.zip icons/ *.json *.js
+zip -0 -r iliasLoginUFR.zip icons/ manifest.json *.js
